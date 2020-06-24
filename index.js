@@ -1,4 +1,3 @@
-const argv = require('yargs').argv
 const axios = require('axios')
 const fs = require('fs');
 
