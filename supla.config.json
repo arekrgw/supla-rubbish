@@ -1,7 +1,7 @@
 {
   "bearer": "NmZlZDJjYmJlYTEzNmVhZDU1YWZiZGRmOTkzYmFlYTgzNTZiM2EyMDAyYTk2MGQ3MjBlMzUwNjc4YjMxMDlmMA.aHR0cHM6Ly9zdnIxNi5zdXBsYS5vcmc=",
   "suplaBaseServerURL": "https://svr16.supla.org/api/v2.3.0",
-  "kiedySmieciURL": "http://localhost:4000",
+  "kiedySmieciURL": "https://kiedysmieciv2.herokuapp.com",
   "functionId": 230,
   "region": "5ef22c025d04fe023023c6cd",
   "channel": "32568"
