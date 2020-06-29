@@ -40,8 +40,9 @@ if (!iconsConfigValidation(icons)) {
       (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
     );
     //wyszukiwanie najblższego wywozu
+    let todayMidnight = new Date(new Date().setHours(0, 0, 0, 0));
     const nearestDate = datesSorted.find(
-      (el) => new Date(el.date).getTime() > new Date().getTime()
+      (el) => new Date(el.date) >= todayMidnight
     );
     if (!nearestDate) {
       console.error(
@@ -60,8 +61,8 @@ if (!iconsConfigValidation(icons)) {
     typesArr = [...typesArr];
     typesArr.sort();
     //liczeneie ile dni zostało do wywozu
-    const howManyDays = Math.round(
-      (new Date(date).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)
+    const howManyDays = Math.floor(
+      (new Date(date) - todayMidnight) / (1000 * 60 * 60 * 24)
     );
 
     //szukanie odpowiedniej ikony z pliku konfiguracyjnego
@@ -92,8 +93,8 @@ if (!iconsConfigValidation(icons)) {
           : `${howManyDays} dzień`
         : `${howManyDays} dni`
     })`;
-    //place for future push notifications
-    //request to supla
+    // place for future push notifications
+    // request to supla
     const response = await axios.put(
       `${config.suplaBaseServerURL}/channels/${config.channel}`,
       {
