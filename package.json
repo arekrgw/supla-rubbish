@@ -4,12 +4,14 @@
   "description": "Simple script for updating SUPLA channel with correct date of taking garbage out",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "gen:supla": "node ./generators/supla.config.generator.js"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.19.2"
+    "axios": "^0.19.2",
+    "readline-sync": "^1.4.10"
   }
 }
