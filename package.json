@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "gen:supla": "node ./generators/supla.config.generator.js"
+    "gen:supla": "node ./generators/supla.config.generator.js",
+    "gen:icons": "node ./generators/icons.config.generator.js"
   },
   "keywords": [],
   "author": "",

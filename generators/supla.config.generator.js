@@ -4,6 +4,7 @@ const config = {
   "kiedySmieciURL": "https://kiedysmieciv2.herokuapp.com",
   "regions": []
 }
+
 const existingConfig = fs.existsSync(__dirname + "/../supla.config.json");
 if(existingConfig){
   if(!readlineSync.keyInYN("Istnieje już plik konfiguracyjny, czy chcesz go nadpisać?: ")) {
@@ -31,12 +32,13 @@ if (readlineSync.keyInYN("Chcesz teraz zacząć wprowadzać regiony?: ")) {
     tempRegion.functionId = readlineSync.question("Podaj jakie ID ma twoja funckja w kanale np. 230: ")
     tempRegion.region = readlineSync.question("Podaj ID regionu z serwera KiedyŚmieci. Wszystkie regiony możesz znaleźć na https://kiedysmieciv2.herokuapp.com/regions: ")
     tempRegion.channel = readlineSync.question("Podaj ID kanału którym chcesz sterować: ")
+    tempRegion.prefix = readlineSync.question("Podaj prefix kanału, czyli prefix przed datą: ")
     config.regions.push(tempRegion);
     console.log(`Region ${i + 1} utworzony!`)
 
+    i++;
     if (!readlineSync.keyInYN(`Chcesz podać kolejny(${i + 1}) region?: `)) next = false;
 
-    i++;
   }
 }
 
