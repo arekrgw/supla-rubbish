@@ -1,7 +1,7 @@
 const suplaConfigValidation = (obj) => {
   if(typeof obj !== 'object' || obj === null) return false
   const mainKeys = ['kiedySmieciURL', 'regions'];
-  const regionKeys = ['bearer', 'suplaBaseServerURL', 'prefix', 'functionId', 'region', 'channel'];
+  const regionKeys = ['bearer', 'suplaBaseServerURL', 'prefix', 'functionId', 'region', 'channel', "printTypes"];
   let truthy = true;
   mainKeys.forEach((key) => {
     if(!obj.hasOwnProperty(key)) truthy = false;

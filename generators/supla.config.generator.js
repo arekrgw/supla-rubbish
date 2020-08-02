@@ -26,6 +26,8 @@ if (readlineSync.keyInYN("Chcesz teraz zacząć wprowadzać regiony?: ")) {
       "functionId": null,
       "region": null,
       "channel": null,
+      "prefix": null,
+      "printTypes": false
     }
     tempRegion.bearer = readlineSync.question("Podaj Authorization Bearer z zakładki Integracje na swojej chmurze SUPLA: ")
     tempRegion.suplaBaseServerURL = readlineSync.question("Podaj API URL chmury SUPLA np. https://svr16.supla.org/api/v2.3.0: ")
@@ -33,6 +35,7 @@ if (readlineSync.keyInYN("Chcesz teraz zacząć wprowadzać regiony?: ")) {
     tempRegion.region = readlineSync.question("Podaj ID regionu z serwera KiedyŚmieci. Wszystkie regiony możesz znaleźć na https://kiedysmieciv2.herokuapp.com/regions: ")
     tempRegion.channel = readlineSync.question("Podaj ID kanału którym chcesz sterować: ")
     tempRegion.prefix = readlineSync.question("Podaj prefix kanału, czyli prefix przed datą: ")
+    tempRegion.printTypes = readlineSync.keyInYN(`Czy chcesz aby wyświetlać rodzaje śmieci za datą?: `)
     config.regions.push(tempRegion);
     console.log(`Region ${i + 1} utworzony!`)
 
