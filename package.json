@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node index.js",
     "gen:supla": "node ./generators/supla.config.generator.js",
-    "gen:icons": "node ./generators/icons.config.generator.js"
+    "gen:icons": "node ./generators/icons.config.generator.js",
+    "gen:notif": "node ./generators/notifications.config.generator.js"
   },
   "keywords": [],
   "author": "",
