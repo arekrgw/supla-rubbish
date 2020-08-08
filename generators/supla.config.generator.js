@@ -5,7 +5,7 @@ const config = {
   "regions": []
 }
 
-const existingConfig = fs.existsSync(__dirname + "/../supla.config.json");
+const existingConfig = fs.existsSync(__dirname + "/../config/supla.config.json");
 if(existingConfig){
   if(!readlineSync.keyInYN("Istnieje już plik konfiguracyjny, czy chcesz go nadpisać?: ")) {
     process.exit(0);
@@ -36,6 +36,17 @@ if (readlineSync.keyInYN("Chcesz teraz zacząć wprowadzać regiony?: ")) {
     tempRegion.channel = readlineSync.question("Podaj ID kanału którym chcesz sterować: ")
     tempRegion.prefix = readlineSync.question("Podaj prefix kanału, czyli prefix przed datą: ")
     tempRegion.printTypes = readlineSync.keyInYN(`Czy chcesz aby wyświetlać rodzaje śmieci za datą?: `)
+    if (readlineSync.keyInYN(`Czy chcesz podać konfiguracje powiadomien PUSH?: `)) {
+      tempRegion.notifications = {}
+      tempRegion.notifications.devices = []
+      tempRegion.notifications.howManyDaysBefore = readlineSync.question("Ile dni przed wywozem chcesz dostać powiadomienie: ")
+      let device = "", k = 1;
+      while((device = readlineSync.question(`Podaj ${k} nazwę urządzenia z pliku notifications.config.json (aby przerwać kliknij enter): `)) !== "") {
+        tempRegion.notifications.devices.push(device);
+        k++;
+      }
+    }
+
     config.regions.push(tempRegion);
     console.log(`Region ${i + 1} utworzony!`)
 
@@ -45,5 +56,5 @@ if (readlineSync.keyInYN("Chcesz teraz zacząć wprowadzać regiony?: ")) {
   }
 }
 
-fs.writeFileSync(__dirname + "/../supla.config.json", JSON.stringify(config, null, 2))
+fs.writeFileSync(__dirname + "/../config/supla.config.json", JSON.stringify(config, null, 2))
 console.log("Plik konfiguracyjny został zapisany!")

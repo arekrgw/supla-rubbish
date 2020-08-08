@@ -2,7 +2,7 @@ const readlineSync = require('readline-sync')
 const fs = require('fs')
 const config = []
 
-const existingConfig = fs.existsSync(__dirname + "/../icons.config.json");
+const existingConfig = fs.existsSync(__dirname + "/../config/icons.config.json");
 if(existingConfig){
   if(!readlineSync.keyInYN("Istnieje już plik konfiguracyjny, czy chcesz go nadpisać?: ")) {
     process.exit(0);
@@ -31,5 +31,5 @@ if (readlineSync.keyInYN("Chcesz teraz zacząć wprowadzać ikony?: ")) {
   }
 }
 
-fs.writeFileSync(__dirname + "/../icons.config.json", JSON.stringify(config, null, 2))
+fs.writeFileSync(__dirname + "/../config/icons.config.json", JSON.stringify(config, null, 2))
 console.log("Plik konfiguracyjny został zapisany!")

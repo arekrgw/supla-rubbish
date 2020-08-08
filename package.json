@@ -13,6 +13,7 @@
   "license": "MIT",
   "dependencies": {
     "axios": "^0.19.2",
+    "joi": "^17.2.0",
     "readline-sync": "^1.4.10"
   }
 }

@@ -1,4 +1,5 @@
 node_modules
-supla.config.json
-icons.config.json
 .idea
+# keep config folder
+config/*
+!config/.gitkeep

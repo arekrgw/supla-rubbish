@@ -1,36 +1,48 @@
 const axios = require("axios");
 const fs = require("fs");
-const {suplaConfigValidation, iconsConfigValidation} = require(__dirname + '/validation')
-const {prettifyTypes} = require('./utilities/utils')
+const { suplaConfigValidation, iconsConfigValidation, notificationsConfigValidation } = require(__dirname + '/validation')
+const { prettifyTypes } = require('./utilities/utils')
+const NotificationsService = require('./services/NotificationsService')
 
 //getting all config files
-let icons, config;
+let icons, config, notificationsConfig;
 try {
-  const rawIcons = fs.readFileSync(__dirname + "/icons.config.json");
+  const rawIcons = fs.readFileSync(__dirname + "/config/icons.config.json");
   icons = JSON.parse(rawIcons);
-  const rawConfig = fs.readFileSync(__dirname + "/supla.config.json");
+  const rawConfig = fs.readFileSync(__dirname + "/config/supla.config.json");
   config = JSON.parse(rawConfig);
+  const rawNotif = fs.readFileSync(__dirname + "/config/notifications.config.json");
+  notificationsConfig = JSON.parse(rawNotif);
 } catch (err) {
-  console.error(
-    "Error reading configuration files, missing",
-    err.path
-  );
-  process.exit(3);
+  const [fileName] = err.path.split("/").slice(-1)
+  if(!fileName === "notifications.config.json"){
+    console.error(
+      "Error reading configuration files, missing",
+      err.path
+    );
+    process.exit(3);
+  }
 }
-
-if (!suplaConfigValidation(config)) {
-  console.error("There is an error in supla.config.json configuration file")
+let res;
+if ((res = suplaConfigValidation.validate(config).error)) {
+  console.error("There is an error in supla.config.json configuration file,", res.details[0].message)
   process.exit(10)
 }
-if (!iconsConfigValidation(icons)) {
-  console.error("There is an error in icons.config.json configuration file");
+
+if ((res = iconsConfigValidation.validate(icons).error)) {
+  console.error("There is an error in icons.config.json configuration file,", res.details[0].message);
+  process.exit(11);
+}
+
+if (notificationsConfig && (res = notificationsConfigValidation.validate(notificationsConfig).error)) {
+  console.error("There is an error in notifications.config.json configuration file,", res.details[0].message);
   process.exit(11);
 }
 
 (async () => {
-  //getting all dates from region
   for (const region of config.regions) {
     try {
+      //getting all dates from region
       const dates = await axios.get(
         `${config.kiedySmieciURL}/dates/${region.region}`
       );
@@ -64,7 +76,6 @@ if (!iconsConfigValidation(icons)) {
       const howManyDays = Math.floor(
         (new Date(date) - todayMidnight) / (1000 * 60 * 60 * 24)
       );
-
       //szukanie odpowiedniej ikony z pliku konfiguracyjnego
       let icon;
       let iconObj = icons.find((el) => {
@@ -94,7 +105,12 @@ if (!iconsConfigValidation(icons)) {
           : `${howManyDays} dzień`
           : `${howManyDays} dni`
       })${region.printTypes ? ' ' + prettifyTypes(typesArr) : ''}`;
-      // place for future push notifications
+      // Creating messages for push notification service
+      if(region.notifications && region.notifications.howManyDaysBefore == howManyDays && notificationsConfig){
+        region.notifications.devices.map((device) => {
+          NotificationsService.appendMessage(notificationsConfig[device].token, region.prefix, dateString);
+        })
+      }
       // request to supla
       const response = await axios.put(
         `${region.suplaBaseServerURL}/channels/${region.channel}`,
@@ -122,4 +138,5 @@ if (!iconsConfigValidation(icons)) {
       console.error("Error occured in one of a region", err);
     }
   }
+  NotificationsService.sendPushNotifications();
 })();
