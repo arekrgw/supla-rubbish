@@ -1,27 +1,22 @@
 const axios = require("axios");
 const fs = require("fs");
-const { suplaConfigValidation, iconsConfigValidation, notificationsConfigValidation } = require(__dirname + '/validation')
+const { suplaConfigValidation, iconsConfigValidation } = require(__dirname + '/validation')
 const { prettifyTypes } = require('./utilities/utils')
 const NotificationsService = require('./services/NotificationsService')
 
 //getting all config files
-let icons, config, notificationsConfig;
+let icons, config;
 try {
   const rawIcons = fs.readFileSync(__dirname + "/config/icons.config.json");
   icons = JSON.parse(rawIcons);
   const rawConfig = fs.readFileSync(__dirname + "/config/supla.config.json");
   config = JSON.parse(rawConfig);
-  const rawNotif = fs.readFileSync(__dirname + "/config/notifications.config.json");
-  notificationsConfig = JSON.parse(rawNotif);
 } catch (err) {
-  const [fileName] = err.path.split("/").slice(-1)
-  if(!fileName === "notifications.config.json"){
-    console.error(
-      "Error reading configuration files, missing",
-      err.path
-    );
-    process.exit(3);
-  }
+  console.error(
+    "Error reading configuration files, missing",
+    err.path
+  );
+  process.exit(3);
 }
 let res;
 if ((res = suplaConfigValidation.validate(config).error)) {
@@ -34,10 +29,7 @@ if ((res = iconsConfigValidation.validate(icons).error)) {
   process.exit(11);
 }
 
-if (notificationsConfig && (res = notificationsConfigValidation.validate(notificationsConfig).error)) {
-  console.error("There is an error in notifications.config.json configuration file,", res.details[0].message);
-  process.exit(11);
-}
+// process.exit(0)
 
 (async () => {
   for (const region of config.regions) {
@@ -106,27 +98,35 @@ if (notificationsConfig && (res = notificationsConfigValidation.validate(notific
           : `${howManyDays} dni`
       })${region.printTypes ? ' ' + prettifyTypes(typesArr) : ''}`;
       // Creating messages for push notification service
-      if(region.notifications && region.notifications.howManyDaysBefore == howManyDays && notificationsConfig){
+      if(region.notifications && NotificationsService.isConfigured){
         region.notifications.devices.map((device) => {
-          NotificationsService.appendMessage(notificationsConfig[device].token, region.prefix, dateString);
+          if(device.days == howManyDays){
+            //set notification
+            NotificationsService.createNotification(device, dateString, region.prefix);
+          }
         })
       }
+      // if(region.notifications && region.notifications.howManyDaysBefore == howManyDays && notificationsConfig){
+      //   region.notifications.devices.map((device) => {
+      //     NotificationsService.appendMessage(notificationsConfig[device].token, region.prefix, dateString);
+      //   })
+      // }
       // request to supla
-      const response = await axios.put(
-        `${region.suplaBaseServerURL}/channels/${region.channel}`,
-        {
-          caption: dateString,
-          functionId: region.functionId,
-          userIconId: icon,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${region.bearer}`,
-            "Content-Type": "application/json",
-            accept: "application/json",
-          },
-        }
-      );
+      // const response = await axios.put(
+      //   `${region.suplaBaseServerURL}/channels/${region.channel}`,
+      //   {
+      //     caption: dateString,
+      //     functionId: region.functionId,
+      //     userIconId: icon,
+      //   },
+      //   {
+      //     headers: {
+      //       Authorization: `Bearer ${region.bearer}`,
+      //       "Content-Type": "application/json",
+      //       accept: "application/json",
+      //     },
+      //   }
+      // );
       //supla updated successfully
       console.log(
         "Check success, new date has been set to",
@@ -138,5 +138,5 @@ if (notificationsConfig && (res = notificationsConfigValidation.validate(notific
       console.error("Error occured in one of a region", err);
     }
   }
-  NotificationsService.sendPushNotifications();
+  NotificationsService.setPushNotifications();
 })();
