@@ -32,6 +32,10 @@ W aktualizacji do 2.0.0 zmieniła się struktura pliku konfiguracyjnego `supla.c
 
 W aktualizacji 3.0.0 zostały dodane powiadomienia push konfigurowane w `supla.config.json` oraz `notifications.config.json`, aby powiadomienia działały potrzebna jest ta aplikacja na androida https://drive.google.com/drive/folders/1JqT-_GsBy62Pi8UqLYqrHV7Y1xCAhKbZ?usp=sharing z niej uzyskamy token potrzebny w konfiguracji powiadomień. Nie potrzeba juz parametru `functionId`. Naprawiono błąd, ze po zmianie lokalizacji kanału po aktualizacji kanału wracał do pierwotnej.
 
+**Od wersji 3.0.0 node.js musi być w wersji conajmniej 12**
+
+Jezeli dla twojego urządzenia nie ma oficalnego buildu to na tej stronie znajdują się nieoficjalne: https://unofficial-builds.nodejs.org/download/release/
+
 ***PRZED UPDATEM DO NOWEJ WERSJI, SKOPIUJ SWOJE PLIKI KONFIGURACYJNE!***
 
 ### KROKI DO AKTUALIZACJI DO v3.0.0
