@@ -3,3 +3,5 @@ node_modules
 # keep config folder
 config/*
 !config/.gitkeep
+supla.config.json
+icons.config.json

@@ -30,7 +30,7 @@ W aktualizacji do 2.0.0 zmieniła się struktura pliku konfiguracyjnego `supla.c
 
 # AKTUALIZACJA v3.0.0
 
-W aktualizacji 3.0.0 zostały dodane powiadomienia push konfigurowane w `supla.config.json` oraz `notifications.config.json`, aby powiadomienia działały potrzebna jest ta aplikacja na androdia https://drive.google.com/drive/folders/1JqT-_GsBy62Pi8UqLYqrHV7Y1xCAhKbZ?usp=sharing z niej uzyskamy token potrzebny w konfiguracji powiadomień. Nie potrzeba juz parametru `functionId`. Naprawiono błąd, ze po zmianie lokalizacji kanału po aktualizacji kanału wracał do pierwotnej.
+W aktualizacji 3.0.0 zostały dodane powiadomienia push konfigurowane w `supla.config.json` oraz `notifications.config.json`, aby powiadomienia działały potrzebna jest ta aplikacja na androida https://drive.google.com/drive/folders/1JqT-_GsBy62Pi8UqLYqrHV7Y1xCAhKbZ?usp=sharing z niej uzyskamy token potrzebny w konfiguracji powiadomień. Nie potrzeba juz parametru `functionId`. Naprawiono błąd, ze po zmianie lokalizacji kanału po aktualizacji kanału wracał do pierwotnej.
 
 ***PRZED UPDATEM DO NOWEJ WERSJI, SKOPIUJ SWOJE PLIKI KONFIGURACYJNE!***
 
@@ -44,9 +44,10 @@ W aktualizacji 3.0.0 zostały dodane powiadomienia push konfigurowane w `supla.c
 6. npm run gen:icons
 ```
 
-Aby powiadomienia działały potrzebny jest zainstalowany program `at`, który mozna zainstalować poleceniem:
+Aby powiadomienia działały potrzebny jest zainstalowany program `at` oraz `curl`, który mozna zainstalować poleceniem:
 ```
 sudo apt install at
+sudo apt install curl
 ```
 
 Na forum SUPLA.org jest wątek poświęcony temu skryptowi oraz serwerowi KiedyŚmieciv2 https://forum.supla.org/viewtopic.php?f=11&t=6861
