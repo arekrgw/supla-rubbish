@@ -23,7 +23,6 @@ if (readlineSync.keyInYN("Chcesz teraz zacząć wprowadzać regiony?: ")) {
     const tempRegion = {
       "bearer": null,
       "suplaBaseServerURL": null,
-      "functionId": null,
       "region": null,
       "channel": null,
       "prefix": null,
@@ -31,7 +30,6 @@ if (readlineSync.keyInYN("Chcesz teraz zacząć wprowadzać regiony?: ")) {
     }
     tempRegion.bearer = readlineSync.question("Podaj Authorization Bearer z zakładki Integracje na swojej chmurze SUPLA: ")
     tempRegion.suplaBaseServerURL = readlineSync.question("Podaj API URL chmury SUPLA np. https://svr16.supla.org/api/v2.3.0: ")
-    tempRegion.functionId = readlineSync.question("Podaj jakie ID ma twoja funckja w kanale np. 230: ")
     tempRegion.region = readlineSync.question("Podaj ID regionu z serwera KiedyŚmieci. Wszystkie regiony możesz znaleźć na https://kiedysmieciv2.herokuapp.com/regions: ")
     tempRegion.channel = readlineSync.question("Podaj ID kanału którym chcesz sterować: ")
     tempRegion.prefix = readlineSync.question("Podaj prefix kanału, czyli prefix przed datą: ")
@@ -39,11 +37,15 @@ if (readlineSync.keyInYN("Chcesz teraz zacząć wprowadzać regiony?: ")) {
     if (readlineSync.keyInYN(`Czy chcesz podać konfiguracje powiadomien PUSH?: `)) {
       tempRegion.notifications = {}
       tempRegion.notifications.devices = []
-      tempRegion.notifications.howManyDaysBefore = readlineSync.question("Ile dni przed wywozem chcesz dostać powiadomienie: ")
-      let device = "", k = 1;
-      while((device = readlineSync.question(`Podaj ${k} nazwę urządzenia z pliku notifications.config.json (aby przerwać kliknij enter): `)) !== "") {
-        tempRegion.notifications.devices.push(device);
+      let next = true, k = 0;
+      while(next) {
+        const tempDevice = {};
+        tempDevice.name = readlineSync.question("Podaj nazwę urzadzenia zgodna z plikiem notifications.config.json: ");
+        tempDevice.days = readlineSync.question("Podaj ile dni przed wywozem ma się wysłać powiadomienie: ")
+        tempDevice.when = readlineSync.question("Podaj godzinę o której ma się wysłać powiadomienie [HH:MM]: ")
+        tempRegion.notifications.devices.push(tempDevice)
         k++;
+        next = readlineSync.keyInYN(`Czy chcesz podać kolejne(${k+1}) powiadomienie?: `)
       }
     }
 

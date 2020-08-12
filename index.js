@@ -106,27 +106,29 @@ if ((res = iconsConfigValidation.validate(icons).error)) {
           }
         })
       }
-      // if(region.notifications && region.notifications.howManyDaysBefore == howManyDays && notificationsConfig){
-      //   region.notifications.devices.map((device) => {
-      //     NotificationsService.appendMessage(notificationsConfig[device].token, region.prefix, dateString);
-      //   })
-      // }
       // request to supla
-      // const response = await axios.put(
-      //   `${region.suplaBaseServerURL}/channels/${region.channel}`,
-      //   {
-      //     caption: dateString,
-      //     functionId: region.functionId,
-      //     userIconId: icon,
-      //   },
-      //   {
-      //     headers: {
-      //       Authorization: `Bearer ${region.bearer}`,
-      //       "Content-Type": "application/json",
-      //       accept: "application/json",
-      //     },
-      //   }
-      // );
+      const {data: channelInfo} = await axios.get(`${region.suplaBaseServerURL}/channels/${region.channel}`, {
+        headers: {
+          Authorization: `Bearer ${region.bearer}`,
+          accept: "application/json",
+        },
+      })
+      const response = await axios.put(
+        `${region.suplaBaseServerURL}/channels/${region.channel}`,
+        {
+          caption: dateString,
+          functionId: channelInfo.functionId,
+          userIconId: icon,
+          locationId: channelInfo.locationId
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${region.bearer}`,
+            "Content-Type": "application/json",
+            accept: "application/json",
+          },
+        }
+      );
       //supla updated successfully
       console.log(
         "Check success, new date has been set to",

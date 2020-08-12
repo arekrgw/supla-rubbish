@@ -6,7 +6,6 @@ const suplaConfigValidation = Joi.object({
     Joi.object({
       bearer: Joi.string().required(),
       suplaBaseServerURL: Joi.string().required(),
-      functionId: Joi.string().required(),
       region: Joi.string().required(),
       channel: Joi.string().required(),
       prefix: Joi.string().required(),
