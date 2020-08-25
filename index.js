@@ -28,7 +28,7 @@ if ((res = iconsConfigValidation.validate(icons).error)) {
   console.error("There is an error in icons.config.json configuration file,", res.details[0].message);
   process.exit(11);
 }
-
+console.log("Notif valid", NotificationsService.isConfigured);
 // process.exit(0)
 
 (async () => {
@@ -85,7 +85,7 @@ if ((res = iconsConfigValidation.validate(icons).error)) {
         icon = null;
       } else icon = iconObj.icon
       //generowanie nazwy kanalu czyli daty
-      const dateString = `${region.prefix}: ${new Date(date)
+      const dateString = `${region.prefix ? region.prefix + ": " : ""}${new Date(date)
         .getDate()
         .toString()
         .padStart(2, "0")}.${(new Date(date).getMonth() + 1)
@@ -102,7 +102,7 @@ if ((res = iconsConfigValidation.validate(icons).error)) {
         region.notifications.devices.map((device) => {
           if(device.days == howManyDays){
             //set notification
-            NotificationsService.createNotification(device, dateString, region.prefix);
+            NotificationsService.createNotification(device, dateString, region.prefix || "");
           }
         })
       }

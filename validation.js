@@ -26,8 +26,15 @@ const iconsConfigValidation = Joi.array().items(Joi.object({
 }))
 
 const notificationsConfigValidation = Joi.object().pattern(/^/, Joi.object({
-  token: Joi.string().pattern(/^ExponentPushToken\[.+\]$/).required()
+  provider: Joi.string().valid("Expo", "Pushover").required(),
+  //Expo notifi
+  tokenExpo: Joi.string().pattern(/^ExponentPushToken\[.+\]$/).when("provider", { is: "Expo", then: Joi.required(), otherwise: Joi.forbidden()}),
+  //Pushover notif
+  tokenPushover: Joi.string().when("provider", { is: "Pushover", then: Joi.required(), otherwise: Joi.forbidden()}),
+  user: Joi.string().when("provider", { is: "Pushover", then: Joi.required(), otherwise: Joi.forbidden()}),
+  device: Joi.string().when("provider", { is: "Pushover", then: Joi.required(), otherwise: Joi.forbidden()}),
 }))
+
 
 module.exports = {
   iconsConfigValidation,

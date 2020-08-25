@@ -14,6 +14,7 @@
   "license": "MIT",
   "dependencies": {
     "axios": "^0.19.2",
+    "form-urlencoded": "^4.2.1",
     "joi": "^17.2.0",
     "lodash": "^4.17.19",
     "readline-sync": "^1.4.10"
