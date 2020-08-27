@@ -28,8 +28,6 @@ if ((res = iconsConfigValidation.validate(icons).error)) {
   console.error("There is an error in icons.config.json configuration file,", res.details[0].message);
   process.exit(11);
 }
-console.log("Notif valid", NotificationsService.isConfigured);
-// process.exit(0)
 
 (async () => {
   for (const region of config.regions) {

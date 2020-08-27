@@ -85,10 +85,9 @@ class NotifiactionsService {
     })
   }
   setPushNotifications() {
-    console.log(this.messages);
     if(_.isEmpty(this.messages)) return;
     if(!_.isEmpty(this.messages.Expo)){
-      // this.setExpoPushNotifications(this.messages.Expo);
+      this.setExpoPushNotifications(this.messages.Expo);
     }
     if(!_.isEmpty(this.messages.Pushover)) {
       this.setPushoverPushNotifications(this.messages.Pushover)
