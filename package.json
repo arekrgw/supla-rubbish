@@ -13,7 +13,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "form-urlencoded": "^4.2.1",
     "joi": "^17.2.0",
     "lodash": "^4.17.19",
